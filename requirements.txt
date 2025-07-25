@@ -1,0 +1,9 @@
+Flask
+gunicorn
+firebase-admin
+python-dotenv
+pdfplumber
+PyPDF2
+python-docx
+openai
+flask-cors
