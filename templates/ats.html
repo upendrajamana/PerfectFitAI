@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ATS Resume Analysis</title>
+  <style>
+    :root {
+      --bg-color: #000;
+      --text-color: #fff;
+      --panel-bg: #111;
+      --score-bg: #1e1e1e;
+      --option-bg: #2c2c2c;
+      --detail-bg: #1a1a1a;
+      --highlight: #00c27f;
+      --accent: #ffa94d;
+    }
+
+    .light-mode {
+      --bg-color: #fff;
+      --text-color: #222;
+      --panel-bg: #f4f4f4;
+      --score-bg: #e4e4e4;
+      --option-bg: #ddd;
+      --detail-bg: #f9f9f9;
+      --highlight: #00a86b;
+      --accent: #ff9900;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      height: 100vh;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .left {
+      width: 40%;
+      background-color: var(--panel-bg);
+      padding: 40px;
+      border-right: 2px solid #222;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .right {
+      width: 60%;
+      padding: 40px;
+      overflow-y: auto;
+      background-color: var(--bg-color);
+    }
+
+    .score-card {
+      background-color: var(--score-bg);
+      padding: 30px;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 350px;
+      color: var(--text-color);
+    }
+
+    .score-card h2 {
+      font-size: 20px;
+      color: var(--text-color);
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .score-main {
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--highlight);
+      text-align: center;
+    }
+
+    .out-of {
+      font-size: 24px;
+      color: var(--text-color);
+    }
+
+    .issues {
+      color: var(--text-color);
+      margin: 5px 0 20px;
+      text-align: center;
+    }
+
+    .score-container {
+      margin-top: 10px;
+    }
+
+    .score-section {
+      margin-bottom: 12px;
+    }
+
+    .score-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--option-bg);
+      padding: 12px 16px;
+      cursor: pointer;
+      font-weight: bold;
+      border-radius: 8px;
+      color: var(--text-color);
+    }
+
+    .score-badge {
+      background: #fff3e0;
+      color: #d17c00;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-weight: 600;
+      position: relative;
+    }
+
+    .score-badge::after {
+      content: '▲';
+      position: absolute;
+      right: -18px;
+      top: 3px;
+      font-size: 12px;
+      color: #d17c00;
+      transition: transform 0.3s;
+    }
+
+    .score-item.active .score-badge::after {
+      transform: rotate(180deg);
+    }
+
+    .options-list {
+      display: none;
+      background: var(--option-bg);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 0 8px 8px;
+      padding: 10px 16px;
+      margin-top: 2px;
+      color: var(--text-color);
+    }
+
+    .options-list div {
+      padding: 4px 0;
+      font-size: 14px;
+    }
+
+    .options-list.show {
+      display: block;
+    }
+
+    .unlock-btn {
+      width: 100%;
+      padding: 12px;
+      background-color: var(--highlight);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 20px;
+    }
+
+    .home-btn {
+      display: inline-block;
+      text-align: center;
+      margin-top: 15px;
+      color: var(--highlight);
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 15px;
+    }
+
+    .home-btn:hover {
+      text-decoration: underline;
+    }
+
+    .tailored-insights-box {
+      background-color: var(--detail-bg);
+      border: 1px solid #333;
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 40px;
+      color: var(--text-color);
+      transition: background 0.3s ease;
+    }
+
+    .tailored-insights-box h2 {
+      margin-top: 0;
+      font-size: 20px;
+      color: var(--accent);
+    }
+
+    .tailored-insights-box p {
+      font-size: 14px;
+      color: var(--text-color);
+      margin-bottom: 10px;
+    }
+
+    .description-input {
+      width: 100%;
+      height: 120px;
+      border-radius: 8px;
+      border: 1px solid #555;
+      background-color: var(--panel-bg);
+      color: var(--text-color);
+      padding: 10px;
+      font-size: 14px;
+      resize: vertical;
+      margin-bottom: 12px;
+    }
+
+    .analyze-btn {
+      background-color: var(--highlight);
+      color: white;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .analyze-btn:hover {
+      background-color: #00a56d;
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      background-color: var(--highlight);
+      color: #fff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+
+  <!-- Left section: Score -->
+  <div class="left">
+    <div class="score-card">
+      <h2>Your Total Score</h2>
+      <div class="score-main">
+        <span id="score-count">0</span><span class="out-of">/100</span>
+      </div>
+
+      <div class="score-container">
+        <div class="score-section">
+          <div class="score-item" onclick="toggleOptions(this)">
+            <span>TAILORING</span>
+            <span class="score-badge" id="match-score">0</span>
+          </div>
+          <div class="options-list">
+            <div>Job Fit</div>
+            <div>Relevance</div>
+          </div>
+        </div>
+
+        <div class="score-section">
+          <div class="score-item" onclick="toggleOptions(this)">
+            <span>CONTENT</span>
+            <span class="score-badge" id="analysis-score">0</span>
+          </div>
+          <div class="options-list">
+            <div>Skills Summary</div>
+            <div>Strengths/Gaps</div>
+          </div>
+        </div>
+
+        <div class="score-section">
+          <div class="score-item" onclick="toggleOptions(this)">
+            <span>SECTION ORDER</span>
+            <span class="score-badge" id="order-score">0</span>
+          </div>
+          <div class="options-list">
+            <div>Ideal Flow</div>
+            <div>Key Sections</div>
+          </div>
+        </div>
+
+        <div class="score-section">
+          <div class="score-item" onclick="toggleOptions(this)">
+            <span>SECTION PRESENCE</span>
+            <span class="score-badge" id="presence-score">0</span>
+          </div>
+          <div class="options-list">
+            <div>Important Sections</div>
+            <div>Completeness</div>
+          </div>
+        </div>
+      </div>
+
+      <hr style="margin: 20px 0;">
+      <a href="/" class="home-btn">← Back to Home</a>
+    </div>
+  </div>
+
+  <!-- Right section: AI Feedback -->
+  <div class="right">
+    <div class="tailored-insights-box">
+      <h2>Get Tailored Insights</h2>
+      <p>Paste the job description below to receive a personalized analysis of how well your resume is tailored.</p>
+      <textarea id="descriptionInput" placeholder="Paste job description here..." class="description-input"></textarea>
+      <button class="analyze-btn" onclick="submitDescription()">Analyze</button>
+    </div>
+    <div style="margin-top: 40px; white-space: pre-line; color: var(--text-color);">
+      {{ analysis }}
+    </div>
+  </div>
+
+  <script>
+    function toggleOptions(item) {
+      item.classList.toggle('active');
+      const next = item.nextElementSibling;
+      if (next && next.classList.contains('options-list')) {
+        next.classList.toggle('show');
+      }
+    }
+
+
+async function submitDescription() {
+  const text = document.getElementById("descriptionInput").value.trim();
+
+  if (!text) {
+    alert("Please enter a job description.");
+    return;
+  }
+
+  try {
+    const response = await fetch("/analyze-description", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ description: text })
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.message || "Something went wrong.");
+    }
+
+    // Show AI feedback
+    alert(result.message);
+    document.getElementById("descriptionInput").value = "";
+  } catch (error) {
+    alert("Error: " + error.message);
+    console.error(error);
+  }
+}
+
+
+
+
+    function animateScore(id, finalValue, suffix = "%") {
+      const el = document.getElementById(id);
+      let count = 0;
+      const interval = setInterval(() => {
+        if (count >= finalValue) {
+          clearInterval(interval);
+          el.textContent = finalValue + suffix;
+        } else {
+          el.textContent = count + suffix;
+          count++;
+        }
+      }, 20);
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      animateScore("score-count", {{ total_score | default(0) }}, "");
+      animateScore("match-score", {{ match_score | default(0) }});
+      animateScore("analysis-score", {{ analysis_score | default(0) }});
+      animateScore("order-score", {{ (resume_order * 10) | default(0) }});
+      animateScore("presence-score", {{ score | default(0) }});
+
+      if (localStorage.getItem("theme") === "light") {
+        document.body.classList.add("light-mode");
+      }
+    });
+
+    function toggleTheme() {
+      document.body.classList.toggle("light-mode");
+      const mode = document.body.classList.contains("light-mode") ? "light" : "dark";
+      localStorage.setItem("theme", mode);
+    }
+
+  </script>
+
+</body>
+</html>

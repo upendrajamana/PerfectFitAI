@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login - OptiCV</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #000;
+      --text-color: #fff;
+      --form-bg: #111;
+      --input-bg: #222;
+      --btn-bg: #0069d9;
+    }
+
+    .light-mode {
+      --bg-color: #fff;
+      --text-color: #000;
+      --form-bg: #fff;
+      --input-bg: #f1f1f1;
+      --btn-bg: #007bff;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      transition: background 0.3s ease, color 0.3s ease;
+      overflow-x: hidden;
+    }
+
+    .form-box {
+      background-color: var(--form-bg);
+      padding: 40px 30px;
+      border-radius: 12px;
+      width: 300px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.15);
+    }
+
+    .form-box h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-weight: 600;
+      color: var(--text-color);
+    }
+
+    .form-box input[type="email"],
+    .form-box input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      background-color: var(--input-bg);
+      color: var(--text-color);
+    }
+
+    .form-box input::placeholder {
+      color: #888;
+    }
+
+    .form-box .link {
+      font-size: 12px;
+      text-align: right;
+      margin: 5px 0;
+    }
+
+    .form-box .link a {
+      text-decoration: none;
+      color: var(--btn-bg);
+    }
+
+    .form-box button[type="submit"] {
+      width: 100%;
+      background-color: var(--btn-bg);
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 15px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    .form-box .bottom {
+      text-align: center;
+      margin: 15px 0 10px;
+      font-size: 13px;
+    }
+
+    .form-box .bottom a {
+      color: var(--btn-bg);
+      text-decoration: none;
+    }
+
+    .or {
+      text-align: center;
+      font-size: 13px;
+      margin: 10px 0;
+      color: #aaa;
+    }
+
+    .social {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .social button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .fb {
+      background-color: #3b5998;
+      color: white;
+    }
+
+    .google {
+      background-color: #fff;
+      color: #333;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-box">
+    <h2>Login</h2>
+    <form>
+      <input type="email" name="email" placeholder="Email" required />
+      <input type="password" name="password" placeholder="Password" required />
+      <div class="link"><a href="#">Forgot password?</a></div>
+      <button type="submit">Login</button>
+      <div class="bottom">
+        Don't have an account? <a href="/signup/3">Signup</a>
+      </div>
+      <div class="or">OR</div>
+      <div class="social">
+        <button class="fb">Login with Facebook</button>
+        <button class="google">Login with Google</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // Apply saved theme on load
+    document.addEventListener("DOMContentLoaded", () => {
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme === "light") {
+        document.body.classList.add("light-mode");
+      }
+    });
+  </script>
+
+</body>
+</html>

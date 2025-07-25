@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Template Gallery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- PDF.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <style>
+        /* Modern Card Styles */
+        .resume-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #f3f4f6;
+            overflow: hidden;
+        }
+
+        .resume-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border-color: #e5e7eb;
+        }
+
+        /* PDF Canvas Styles */
+        .pdf-canvas {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+            background: white;
+        }
+body {
+  overflow-x: hidden; /* disables both horizontal and vertical scroll */
+}
+
+        /* Loading Spinner */
+        .loading-spinner {
+            border: 3px solid #f3f4f6;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Button Styles */
+        .preview-btn {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            color: #475569;
+            font-weight: 500;
+            padding: 10px 16px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .preview-btn:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .use-btn {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            font-weight: 600;
+            padding: 10px 16px;
+            border-radius: 8px;
+            border: none;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .use-btn:hover {
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        /* Category Badge */
+        .category-badge {
+            background: #eff6ff;
+            color: #1d4ed8;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            border: 1px solid #dbeafe;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            background: white;
+            border-right: 1px solid #e5e7eb;
+            min-height: 100vh;
+            width: 280px;
+        }
+
+        .sidebar-item {
+            padding: 12px 20px;
+            margin: 4px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #6b7280;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sidebar-item:hover {
+            background: #f9fafb;
+            color: #374151;
+        }
+
+        .sidebar-item.active {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border: 1px solid #dbeafe;
+        }
+
+        /* Responsive Grid */
+        .resume-grid {
+            display: grid;
+            gap: 24px;
+            grid-template-columns: 1fr;
+        }
+
+        @media (min-width: 768px) {
+            .resume-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .resume-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 1023px) {
+            .sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex">
+        <!-- Left Sidebar (Desktop Only) -->
+        <div class="sidebar hidden lg:block">
+            <div class="p-6">
+                <h2 class="text-xl font-bold text-gray-900 mb-6">Categories</h2>
+                <div class="space-y-1">
+                    <div class="sidebar-item active">
+                        <span>📄</span>
+                        All Templates
+                    </div>
+                    <div class="sidebar-item">
+                        <span>✨</span>
+                        Modern
+                    </div>
+                    <div class="sidebar-item">
+                        <span>📋</span>
+                        Classic
+                    </div>
+                    <div class="sidebar-item">
+                        <span>🎨</span>
+                        Creative
+                    </div>
+                    <div class="sidebar-item">
+                        <span>💼</span>
+                        Professional
+                    </div>
+                    <div class="sidebar-item">
+                        <span>⚪</span>
+                        Minimalist
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1">
+            <!-- Header -->
+            <div class="bg-white border-b border-gray-200 px-6 py-6">
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">Resume Templates</h1>
+                <p class="text-gray-600">Choose from our collection of professional resume templates</p>
+            </div>
+
+            <!-- Resume Grid -->
+            <div class="p-6">
+                <div id="resumeGrid" class="resume-grid">
+                    <!-- Resume cards will be generated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+    // Resume metadata
+    const resumes = [
+  { name: "Modern Resume", category: "Modern", id: 1, file: "static/resumes/resume1.pdf" },
+  { name: "Classic Resume", category: "Classic", id: 2, file: "static/resumes/resume2.pdf" },
+  { name: "Creative Modern", category: "Creative", id: 3, file: "static/resumes/resume3.pdf" },
+  { name: "Professional Classic", category: "Professional", id: 4, file: "static/resumes/resume4.pdf" },
+  { name: "Tech Resume", category: "Modern", id: 5, file: "static/resumes/resume5.pdf" },
+  { name: "Executive Classic", category: "Professional", id: 6, file: "static/resumes/resume6.pdf" },
+  { name: "Minimalist Design", category: "Minimalist", id: 7, file: "static/resumes/resume7.pdf" },
+  { name: "Creative Portfolio", category: "Creative", id: 8, file: "static/resumes/resume8.pdf" },
+  { name: "Clean Modern", category: "Modern", id: 9, file: "static/resumes/resume9.pdf" }
+];
+
+
+
+
+    // PDF.js worker config
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    // Render a PDF to canvas
+    async function renderPDF(pdfUrl, canvasId) {
+        const canvas = document.getElementById(canvasId);
+        const ctx = canvas.getContext('2d');
+        const loadingDiv = document.getElementById(`loading-${canvasId}`);
+
+        try {
+            const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
+            const page = await pdf.getPage(1);
+            const viewport = page.getViewport({ scale: 1.2 });
+
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
+
+            await page.render({ canvasContext: ctx, viewport }).promise;
+
+            loadingDiv.style.display = 'none';
+            canvas.style.display = 'block';
+        } catch (error) {
+            console.error('Error loading PDF:', error);
+            loadingDiv.innerHTML = `
+                <div class="text-center p-8">
+                    <p class="text-red-500 text-sm">❌ Failed to load preview</p>
+                </div>`;
+        }
+    }
+
+    // Create a resume card
+    function createResumeCard(resume, index) {
+        const canvasId = `canvas-${index}`;
+        return `
+            <div class="resume-card" style="width:300px; border:1px solid #ddd; margin:15px; padding:10px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+                <div class="relative bg-gray-50 aspect-[3/4] p-2">
+                    <div id="loading-${canvasId}" class="flex items-center justify-center">
+                        <div>
+                            <div class="loading-spinner mb-2"></div>
+                            <p class="text-gray-500 text-sm">Loading preview...</p>
+                        </div>
+                    </div>
+                    <canvas id="${canvasId}" class="pdf-canvas" style="display: none;"></canvas>
+                </div>
+
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold mb-1">${resume.name}</h3>
+                    <div class="mb-3"><span class="category-badge">${resume.category}</span></div>
+
+                    <div class="flex gap-2">
+                        <button onclick="previewResume('${resume.file}', '${resume.name}')" class="preview-btn" style="flex:1; padding:8px; background:#ccc;">👁️ Preview</button>
+<button onclick="useTemplate(${resume.id})" class="use-btn">✨ Use</button>
+
+
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // Render all resumes
+    function renderResumes() {
+        const grid = document.getElementById('resumeGrid');
+        grid.innerHTML = resumes.map((resume, index) => createResumeCard(resume, index)).join('');
+
+        setTimeout(() => {
+            resumes.forEach((resume, index) => {
+                renderPDF(resume.file, `canvas-${index}`);
+            });
+        }, 100);
+    }
+
+    // Opens PDF in new tab
+    function previewResume(pdfUrl, name) {
+        window.open(pdfUrl, '_blank');
+    }
+
+  function useTemplate(id) {
+    window.location.href = `/resume/${id}`;
+}
+
+
+    // Init
+    document.addEventListener('DOMContentLoaded', renderResumes);
+</script>
+
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'963941ac166b17ab',t:'MTc1MzI1MzU2Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

@@ -1,0 +1,1630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OptiCV - AI Resume Enhancement</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+  :root {
+    --bg-color: #000;
+    --text-color: #fff;
+    --secondary-color: #ccc;
+    --feature-bg: #111;
+    --card-bg: #1e1e2f;
+    --badge-color: #00ffae;
+    --hover-color: linear-gradient(to bottom, #6366f1, #1e1b4b);
+    --input-bg: #222;
+    --card-bg: #1a1a2e;
+    --secondary-color: #8892b0;
+    --badge-color: #64ffda;
+    --primary-color: #0f3460;
+    --accent-color: #e94560;
+  }
+
+  .light-mode {
+  --bg-color: #ffffff;
+  --text-color: #1a1a1a;
+  --secondary-color: #444;
+  --feature-bg: #f9f9ff;
+  --card-bg: #f0f2f5;
+  --badge-color: #3b82f6; /* soft blue */
+  --hover-color: #e0e7ff; /* light blue tint */
+  --input-bg: #f4f6f8;
+  --border-color: #dcdcdc;
+  --shadow-color: rgba(0, 0, 0, 0.08);
+}
+
+
+  * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0a0a0f;
+            color: #e2e8f0;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+html, body {
+  overflow-x: hidden;
+}
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background-color: var(--bg-color);
+  }
+.nav-btn {
+  color: var(--text-color);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 10px 20px;
+  border-radius: 8px;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.nav-btn::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--hover-color);
+  transform: translateX(-50%);
+  transition: width 0.3s ease;
+}
+
+.nav-btn:hover {
+  background: rgba(79, 60, 201, 0.1);
+  transform: translateY(-2px);
+  color: #ffffff;
+}
+
+.nav-btn:hover::after {
+  width: 80%;
+}
+.upload-form {
+            position: relative;
+        }
+
+        .upload-button {
+            position: relative;
+            background: linear-gradient(135deg, #e879f9 0%, #c084fc 25%, #a855f7 50%, #8b5cf6 75%, #6366f1 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 12px 24px;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow:
+                0 4px 14px 0 rgba(139, 92, 246, 0.25),
+                0 2px 4px 0 rgba(139, 92, 246, 0.12);
+            overflow: hidden;
+            letter-spacing: -0.025em;
+            min-width: 160px;
+            justify-content: center;
+        }
+
+        .upload-button::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, #e879f9, #c084fc, #a855f7, #8b5cf6, #6366f1);
+            border-radius: 14px;
+            z-index: -1;
+            opacity: 0;
+            filter: blur(8px);
+            transition: opacity 0.3s ease;
+        }
+
+        .upload-button:hover {
+            transform: translateY(-2px);
+            box-shadow:
+                0 8px 25px 0 rgba(139, 92, 246, 0.35),
+                0 4px 12px 0 rgba(139, 92, 246, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+        }
+
+        .upload-button:hover::before {
+            opacity: 0.4;
+        }
+
+        .upload-button:active {
+            transform: translateY(-1px);
+            transition: transform 0.1s ease;
+        }
+
+        .upload-button i {
+            font-size: 14px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .upload-button span {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Ripple Effect */
+        .upload-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+            z-index: 1;
+        }
+
+        .upload-button.ripple::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        /* Focus states for accessibility */
+        .upload-button:focus {
+            outline: none;
+            box-shadow:
+                0 8px 25px 0 rgba(139, 92, 246, 0.35),
+                0 4px 12px 0 rgba(139, 92, 246, 0.2),
+                0 0 0 3px rgba(139, 92, 246, 0.3);
+        }
+
+        /* Loading state */
+        .upload-button.loading {
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        .upload-button.loading i {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Success state */
+        .upload-button.success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            box-shadow:
+                0 4px 14px 0 rgba(16, 185, 129, 0.25),
+                0 2px 4px 0 rgba(16, 185, 129, 0.12);
+        }
+
+        .upload-button.success:hover {
+            box-shadow:
+                0 8px 25px 0 rgba(16, 185, 129, 0.35),
+                0 4px 12px 0 rgba(16, 185, 129, 0.2);
+        }
+
+        .upload-button.success::before {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+
+.toggle-theme {
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+.toggle-theme:hover {
+  background: rgba(0, 0, 0, 0.1);
+  transform: rotate(20deg);
+}
+
+
+
+  .hero {
+    margin: 15px 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .hero-text {
+    max-width: 600px;
+  }
+
+  .hero-text h1 {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+
+  .hero-text p {
+    font-size: 18px;
+    color: var(--secondary-color);
+    margin-bottom: 30px;
+  }
+
+  .hero-text button {
+    background-color: #805cf2;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+
+        .score-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 50px 40px;
+            border-radius: 28px;
+            max-width: 420px;
+            margin-top: 1px;
+            margin-left: 40px;
+            box-shadow:
+                0 25px 50px rgba(0, 0, 0, 0.5),
+                0 0 0 1px var(--glass-border),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .score-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg,
+                rgba(100, 255, 218, 0.8) 0%,
+                rgba(15, 52, 96, 0.8) 50%,
+                rgba(233, 69, 96, 0.8) 100%);
+            border-radius: 28px 28px 0 0;
+        }
+
+        .score-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                from 0deg,
+                transparent 0deg,
+                rgba(100, 255, 218, 0.03) 90deg,
+                transparent 180deg,
+                rgba(15, 52, 96, 0.03) 270deg,
+                transparent 360deg
+            );
+            animation: rotate 20s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .score-card:hover {
+            transform: translateY(-8px);
+            box-shadow:
+                0 35px 70px rgba(0, 0, 0, 0.6),
+                0 0 0 1px rgba(100, 255, 218, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        }
+
+        .score-title {
+            text-align: center;
+            font-size: 26px;
+            font-weight: 600;
+            margin-bottom: 35px;
+            color: #aaaaff;
+            position: relative;
+            text-shadow: 0 0 20px rgba(170, 170, 255, 0.3);
+            letter-spacing: 0.5px;
+        }
+
+        .score-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #64ffda, transparent);
+            border-radius: 1px;
+        }
+
+        .score-main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .score-circle-container {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            margin: 0 auto;
+        }
+
+        .progress-ring {
+            transform: rotate(-90deg);
+            width: 160px;
+            height: 160px;
+        }
+
+        .progress-ring-bg {
+            fill: none;
+            stroke: var(--feature-bg);
+            stroke-width: 12;
+            opacity: 0.3;
+        }
+
+        .progress-ring-fill {
+            fill: none;
+            stroke: url(#progressGradient);
+            stroke-width: 12;
+            stroke-linecap: round;
+            stroke-dasharray: 471.24;
+            stroke-dashoffset: 471.24;
+            transition: stroke-dashoffset 2.5s cubic-bezier(0.4, 0, 0.2, 1);
+            filter:
+                drop-shadow(0 0 12px rgba(100, 255, 218, 0.6))
+                drop-shadow(0 0 24px rgba(100, 255, 218, 0.3));
+        }
+
+        .progress-ring-glow {
+            fill: none;
+            stroke: #64ffda;
+            stroke-width: 16;
+            stroke-linecap: round;
+            stroke-dasharray: 471.24;
+            stroke-dashoffset: 471.24;
+            transition: stroke-dashoffset 2.5s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0.2;
+            filter: blur(4px);
+        }
+
+        .score-display {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .score-number {
+            font-size: 52px;
+            font-weight: 700;
+            color: #64ffda;
+            line-height: 1;
+            text-shadow:
+                0 0 30px rgba(100, 255, 218, 0.5),
+                0 0 60px rgba(100, 255, 218, 0.2);
+            background: linear-gradient(135deg, #64ffda 0%, #4fd1c7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+        }
+
+        .score-number::before {
+            content: attr(data-value);
+            position: absolute;
+            top: 0;
+            left: 0;
+            color: #64ffda;
+            filter: blur(2px);
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .out-of {
+            font-size: 14px;
+            color: #8892b0;
+            margin-top: 8px;
+            display: block;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .score-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .score-item {
+            background: var(--feature-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 24px 20px;
+            border-radius: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--glass-border);
+            box-shadow:
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .score-item:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow:
+                0 20px 40px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(100, 255, 218, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border-color: rgba(100, 255, 218, 0.3);
+        }
+
+        .score-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 0%;
+            background: linear-gradient(90deg,
+                rgba(100, 255, 218, 0.15) 0%,
+                rgba(100, 255, 218, 0.05) 50%,
+                transparent 100%);
+            transition: width 2s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 16px 0 0 16px;
+        }
+
+        .score-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.02) 0%,
+                transparent 50%,
+                rgba(0, 0, 0, 0.02) 100%);
+            pointer-events: none;
+            border-radius: 16px;
+        }
+
+        .score-label {
+            font-size: 13px;
+            color: var(--secondary-color);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            position: relative;
+            z-index: 2;
+            opacity: 0.9;
+        }
+
+        .score-badge {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--badge-color);
+            min-width: 70px;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-shadow:
+                0 0 15px rgba(100, 255, 218, 0.4),
+                0 0 30px rgba(100, 255, 218, 0.2);
+            position: relative;
+            z-index: 2;
+            background: linear-gradient(135deg, #64ffda 0%, #4fd1c7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .score-badge::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle, rgba(100, 255, 218, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: -1;
+            transition: all 0.3s ease;
+        }
+
+        .score-item:hover .score-badge::before {
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, rgba(100, 255, 218, 0.2) 0%, transparent 70%);
+        }
+
+        .mini-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg,
+                #64ffda 0%,
+                #4fd1c7 50%,
+                #64ffda 100%);
+            width: 0%;
+            transition: width 2.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 0 0 16px 16px;
+            box-shadow:
+                0 0 8px rgba(100, 255, 218, 0.6),
+                0 0 16px rgba(100, 255, 218, 0.3);
+            overflow: hidden;
+        }
+
+        .mini-progress::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.4) 50%,
+                transparent 100%);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        @keyframes countUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .count-animation {
+            animation: countUp 0.5s ease-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .loading {
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .score-card {
+                margin: 20px;
+                padding: 30px 20px;
+                max-width: calc(100% - 40px);
+            }
+
+            .score-circle-container {
+                width: 140px;
+                height: 140px;
+            }
+
+            .progress-ring {
+                width: 140px;
+                height: 140px;
+            }
+
+            .score-number {
+                font-size: 40px;
+            }
+        }
+   .features {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Changed from 3 to 2 */
+   row-gap: 3rem;
+  column-gap: 8rem;
+
+  max-width: 1000px;
+  margin: 100px auto;
+}
+
+
+        .feature-box {
+            background:
+                linear-gradient(145deg, rgba(30, 27, 75, 0.4) 0%, rgba(49, 46, 129, 0.3) 100%),
+                linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            border: 1px solid rgba(148, 163, 184, 0.15);
+            border-radius: 24px;
+            padding: 2rem;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-decoration: none;
+            color: inherit;
+            backdrop-filter: blur(10px);
+            box-shadow:
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .feature-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 30% 20%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                linear-gradient(145deg, rgba(168, 85, 247, 0.08) 0%, rgba(59, 130, 246, 0.05) 100%);
+            opacity: 0;
+            transition: all 0.5s ease;
+            border-radius: 24px;
+        }
+
+        .feature-box::after {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(168, 85, 247, 0.4) 50%,
+                rgba(59, 130, 246, 0.4) 70%,
+                transparent 90%
+            );
+            border-radius: 27px;
+            z-index: -1;
+            opacity: 0;
+            transition: all 0.5s ease;
+            filter: blur(1px);
+        }
+
+        .feature-box:hover {
+            transform: translateY(-12px) scale(1.03);
+            background:
+                linear-gradient(145deg, rgba(30, 27, 75, 0.6) 0%, rgba(49, 46, 129, 0.5) 100%),
+                linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%);
+            border-color: rgba(168, 85, 247, 0.4);
+            box-shadow:
+                0 25px 50px rgba(0, 0, 0, 0.4),
+                0 0 40px rgba(168, 85, 247, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .feature-box:hover::before {
+            opacity: 1;
+            background:
+                radial-gradient(circle at 30% 20%, rgba(168, 85, 247, 0.25) 0%, transparent 60%),
+                radial-gradient(circle at 70% 80%, rgba(59, 130, 246, 0.2) 0%, transparent 60%),
+                linear-gradient(145deg, rgba(168, 85, 247, 0.15) 0%, rgba(59, 130, 246, 0.1) 100%);
+        }
+
+        .feature-box:hover::after {
+            opacity: 1;
+            animation: borderFlow 3s ease-in-out infinite;
+        }
+
+        .feature-box.highlighted {
+            background:
+                linear-gradient(145deg, rgba(30, 27, 75, 0.8) 0%, rgba(49, 46, 129, 0.7) 100%),
+                linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);
+            border-color: rgba(168, 85, 247, 0.6);
+            box-shadow:
+                0 20px 40px rgba(0, 0, 0, 0.3),
+                0 0 30px rgba(168, 85, 247, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            transform: translateY(-6px);
+        }
+
+        .feature-box.highlighted::before {
+            opacity: 1;
+            background:
+                radial-gradient(circle at 30% 20%, rgba(168, 85, 247, 0.3) 0%, transparent 60%),
+                radial-gradient(circle at 70% 80%, rgba(59, 130, 246, 0.25) 0%, transparent 60%),
+                linear-gradient(145deg, rgba(168, 85, 247, 0.2) 0%, rgba(59, 130, 246, 0.15) 100%);
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(145deg, #374151 0%, #4b5563 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: transform 0.6s ease;
+        }
+
+        .feature-box:hover .feature-icon::before {
+            transform: rotate(45deg) translate(100%, 100%);
+        }
+
+        .feature-icon svg {
+            width: 24px;
+            height: 24px;
+            color: #e2e8f0;
+            transition: color 0.3s ease;
+        }
+
+        .feature-box.highlighted .feature-icon {
+            background: linear-gradient(135deg, #a855f7 0%, #3b82f6 100%);
+            box-shadow: 0 6px 16px rgba(168, 85, 247, 0.4);
+        }
+
+        .feature-box.highlighted .feature-icon svg {
+            color: #ffffff;
+        }
+
+        .feature-box h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #f1f5f9;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.025em;
+        }
+
+        .feature-box p {
+            color: #94a3b8;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            flex: 1;
+        }
+
+        @keyframes borderPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes borderFlow {
+            0% {
+                background: linear-gradient(
+                    45deg,
+                    transparent 30%,
+                    rgba(168, 85, 247, 0.4) 50%,
+                    rgba(59, 130, 246, 0.4) 70%,
+                    transparent 90%
+                );
+            }
+            25% {
+                background: linear-gradient(
+                    135deg,
+                    transparent 30%,
+                    rgba(59, 130, 246, 0.4) 50%,
+                    rgba(6, 182, 212, 0.4) 70%,
+                    transparent 90%
+                );
+            }
+            50% {
+                background: linear-gradient(
+                    225deg,
+                    transparent 30%,
+                    rgba(6, 182, 212, 0.4) 50%,
+                    rgba(168, 85, 247, 0.4) 70%,
+                    transparent 90%
+                );
+            }
+            75% {
+                background: linear-gradient(
+                    315deg,
+                    transparent 30%,
+                    rgba(168, 85, 247, 0.4) 50%,
+                    rgba(59, 130, 246, 0.4) 70%,
+                    transparent 90%
+                );
+            }
+            100% {
+                background: linear-gradient(
+                    45deg,
+                    transparent 30%,
+                    rgba(168, 85, 247, 0.4) 50%,
+                    rgba(59, 130, 246, 0.4) 70%,
+                    transparent 90%
+                );
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .features {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.25rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 1rem;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .feature-box {
+                padding: 1.5rem;
+                min-height: 140px;
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a2e;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #a855f7, #3b82f6);
+            border-radius: 4px;
+        }
+    /* 🔽 Service Section Styles */
+.services-section {
+  padding: 80px 40px;
+  text-align: center;
+  background-color: var(--bg-color);
+}
+
+.section-title .badge {
+  background-color: var(--accent, #805cf2);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+.section-title h2 {
+  font-size: 36px;
+  margin-bottom: 16px;
+  color: var(--text-color);
+}
+
+.section-title p {
+  font-size: 16px;
+  color: var(--text-color);
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 40px;
+  margin-top: 40px;
+}
+
+.card {
+ margin-left:150px;
+  height:450px;
+  width:400px;
+  background-color: var(--card-bg, #111);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card img {
+  width: 100%;
+  height: 306px;
+  display: block;
+}
+
+.card-content {
+  padding: 20px;
+}
+
+.card-content h4 {
+  margin: 0 0 10px;
+  font-size: 18px;
+  color: var(--text-color);
+}
+
+.card-content p {
+  font-size: 14px;
+  color: #ccc;
+}
+
+.light-mode .card-content p {
+  color: #444;
+}
+    .auth-buttons {
+    margin-left:30px;
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.btn {
+  padding: 10px 20px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 16px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: inline-block;
+}
+
+.signin-btn {
+  background-color: #805cf2;
+  color: white;
+}
+
+.signup-btn {
+  background-color: #00c27f;
+  color: white;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+.faq-section {
+  margin: 100px auto;
+  padding: 0 40px;
+  max-width: 900px;
+}
+
+.faq-title {
+  text-align: center;
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  color: var(--text-color);
+}
+
+.faq-item {
+  background-color: var(--feature-bg);
+  margin-bottom: 20px;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.faq-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--text-color);
+  cursor: pointer;
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, opacity 0.3s ease;
+  background-color: var(--feature-bg);
+  padding: 0 24px;
+  font-size: 15px;
+  color: var(--secondary-color);
+  opacity: 0;
+}
+
+.faq-item.open .faq-answer {
+  max-height: 150px;
+  padding: 20px 24px;
+  opacity: 1;
+}
+
+.faq-item .icon {
+  font-size: 24px;
+  transition: transform 0.3s ease;
+}
+
+.faq-item.open .icon {
+  transform: rotate(45deg);
+}
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #805cf2, #a179f2);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  position: relative;
+  display: inline-block;
+  margin: 0;
+}
+
+.logo-underline {
+  content: "";
+  display: block;
+  width: 30px;
+  height: 4px;
+  background-color: #ff9900; /* Orange underline */
+  border-radius: 2px;
+  margin-top: 6px;
+  margin-left: 5px; /* align under the text slightly */
+}
+
+
+</style>
+</head>
+<body>
+  <header>
+    <h1 class="logo">PerfectFitAI<span class="logo-underline"></span> </h1>
+    <nav>
+      <a href="/" class="nav-btn">Home</a>
+      <a href="/contact" class="nav-btn">Contact</a>
+      <a href="/about" class="nav-btn">About</a>
+      <a href="/testimonials" class="nav-btn">Testimonial</a>
+    </nav>
+    <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 12px;">
+
+  <form action="/upload" method="post" enctype="multipart/form-data" class="upload-form">
+            <input type="file" id="resumeInput" name="resume" style="display: none;" onchange="handleFileUpload(this)" accept=".pdf,.doc,.docx" />
+
+            <!-- Modern Upload Button -->
+            <button type="button" onclick="triggerFileUpload()" class="upload-button" id="uploadBtn">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <span>Upload Resume</span>
+            </button>
+        </form>
+
+  <!-- Theme Toggle Button -->
+  <!--<button class="toggle-theme" onclick="toggleTheme()">🌙</button> -->
+</div>
+
+  </header>
+<div class="auth-buttons">
+  <a href="/signin/2" class="btn signin-btn"> Sign In</a>
+  <a href="/signup/3" class="btn signup-btn"> Sign Up</a>
+</div>
+
+  <section class="hero">
+
+
+    <div class="hero-text">
+      <h1>AI-Powered Resume<br>Enhancement Platform</h1>
+      <p>PerfectFitAI enhances your job search with AI-driven resume analysis. Identify strengths, fix weaknesses, and showcase your potential effectively. Start landing your dream job!</p>
+      <a href="/know">
+  <button>Know More</button>
+      </a>
+
+    </div>
+
+    <div class="score-card">
+        <!-- TOTAL SCORE -->
+        <div class="score-circle-container">
+        <svg class="progress-ring" viewBox="0 0 160 160">
+            <defs>
+                <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#64ffda;stop-opacity:1" />
+                    <stop offset="50%" style="stop-color:#4fd1c7;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#64ffda;stop-opacity:1" />
+                </linearGradient>
+            </defs>
+            <circle class="progress-ring-bg" cx="80" cy="80" r="75"></circle>
+            <circle id="totalProgressGlow" class="progress-ring-glow" cx="80" cy="80" r="75"></circle>
+            <circle id="totalProgressRing" class="progress-ring-fill" cx="80" cy="80" r="75"></circle>
+        </svg>
+        <div class="score-display">
+            <div class="score-number" id="totalScore">0</div>
+            <span class="out-of">out of 100</span>
+        </div>
+    </div>
+
+        <!-- Individual Scores -->
+        <div class="score-section">
+    <div class="score-item">
+        <span class="score-label">Content Score</span>
+        <span class="score-badge" id="contentScore">0%</span>
+        <div class="mini-progress" id="contentProgress"></div>
+    </div>
+    <div class="score-item">
+        <span class="score-label">Resume Format (Section Order)</span>
+        <span class="score-badge" id="orderScore">0%</span>
+        <div class="mini-progress" id="orderProgress"></div>
+    </div>
+    <div class="score-item">
+        <span class="score-label">Grammar Score</span>
+        <span class="score-badge" id="grammarScore">0%</span>
+        <div class="mini-progress" id="grammarProgress"></div>
+    </div>
+</div>
+
+    </div>
+
+  </section>
+
+  <section class="features">
+        <a href="/score" class="feature-box" style="text-decoration: none; color: inherit;" data-id="1">
+          <div class="feature-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+            </svg>
+          </div>
+          <h3>ATS Checker</h3>
+          <p>Simulates HR resume scoring tools.</p>
+        </a>
+
+        <a href="/feature/2" class="feature-box" style="text-decoration: none; color: inherit;" data-id="2">
+          <div class="feature-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+            </svg>
+          </div>
+          <h3>Formatting Feedback</h3>
+          <p>Visually and semantically align resume.</p>
+        </a>
+        <div class="feature-box">
+          <div class="feature-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+          </div>
+          <h3>Skill Detection</h3>
+          <p>Identifies missing technologies & soft skills.</p>
+        </div>
+        <a href="/feature/4" class="feature-box" style="text-decoration: none; color: inherit;" data-id="4">
+          <div class="feature-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+            </svg>
+          </div>
+          <h3>🖋 AI Suggestions</h3>
+          <p>get good suggestions</p>
+        </a>
+        <a href="/feature/5" class="feature-box" style="text-decoration: none; color: inherit;" data-id="4">
+          <div class="feature-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+            </svg>
+          </div>
+          <h3>Project Ideas</h3>
+          <p>Gain practical experience to fill skill gaps.</p>
+        </a>
+
+        <div class="feature-box">
+          <div class="feature-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <h3>  Free Start</h3>
+          <p>Get started at zero cost with smart tools.</p>
+        </div>
+        <a href="/popular-resumes" class="feature-box" style="text-decoration: none; color: inherit;" data-id="4">
+          <div class="feature-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
+            </svg>
+          </div>
+          <h3>Popular Resumes</h3>
+          <p>View top-performing resumes optimized for ATS systems</p>
+        </a>
+        <a href="/transparency" class="feature-box" style="text-decoration: none; color: inherit;" data-id="4">
+          <div class="feature-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+          </div>
+          <h3>  Transparency</h3>
+          <p>Built with fairness, backed by AI ethics.</p>
+        </a>
+    </section>
+  <!-- Service Section -->
+<section class="services-section">
+  <div class="section-title">
+    <span class="badge">What We</span>
+    <h2>Our Service Offering</h2>
+    <p>
+      OptiCV offers data-driven resume enhancement using real-world benchmarks.<br>
+      Our AI handles the complexity, allowing you to focus on showcasing your true potential effectively and efficiently.
+    </p>
+  </div>
+  <div class="card-grid">
+    <a href="/" >
+    <div class="card">
+      <img src="static/analysis.jpg" alt="Resume Upload">
+      <div class="card-content">
+        <h4>Resume Upload</h4>
+        <p>
+          Upload your resume in PDF or DOCX format. Our advanced AI engine analyzes your resume’s structure, keyword strength, formatting, and skill coverage. Start today!
+        </p>
+      </div>
+    </div>
+    </a>
+<a href="/signin/2" >
+    <div class="card">
+
+      <img src="static/ai_image.png" alt="Sign In">
+      <div class="card-content">
+        <h4>Sign In / Register</h4>
+        <p>
+          Sign up to access features on the platform. You’ll find a simple layout that lets you either register as a new user or sign in to your existing account.
+        </p>
+      </div>
+    </div>
+    </a>
+  </div>
+</section>
+  <section class="faq-section">
+  <h2 class="faq-title">FAQ Section</h2>
+
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleFaq(this)">
+      <span>How does PerfectFitAI improve my resume?</span>
+      <span class="icon">+</span>
+    </div>
+    <div class="faq-answer">PerfectFitAI analyzes your resume using AI, identifies key gaps, and suggests improvements to better match job roles.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleFaq(this)">
+      <span>Is PerfectFitAI suitable for all job roles?</span>
+      <span class="icon">+</span>
+    </div>
+    <div class="faq-answer">Yes! PerfectFitAI is designed to be adaptable across various industries and job roles.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleFaq(this)">
+      <span>What file formats does PerfectFitAI support?</span>
+      <span class="icon">+</span>
+    </div>
+    <div class="faq-answer">You can upload resumes in PDF and DOCX formats.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleFaq(this)">
+      <span>How quickly do I get my resume score?</span>
+      <span class="icon">+</span>
+    </div>
+    <div class="faq-answer">You get your resume score almost instantly after uploading and processing.</div>
+  </div>
+</section>
+
+<script>
+           function toggleTheme() {
+  const btn = document.querySelector(".toggle-theme");
+
+  // If current button icon is moon, switch to sun and vice versa
+  if (btn.textContent.trim() === "🌙") {
+    btn.textContent = "☀️";
+  } else {
+    btn.textContent = "🌙";
+  }
+
+  // ✅ Your theme toggle logic already handled elsewhere
+}
+
+  document.addEventListener("DOMContentLoaded", function () {
+    // ✅ Reapply saved theme
+    if (localStorage.getItem("theme") === "light") {
+      document.body.classList.add("light-mode");
+    }
+
+    // ✅ Animate the scores
+    animateScore("totalScore", {{ total_score | int | default(0) }}, "");
+    animateScore("contentScore", {{ analysis_score | int | default(0) }}, "%");
+    animateScore("orderScore", {{ resume_order_score * 10 | int | default(0) }}, "%");
+    animateScore("grammarScore", {{ grammar_score | int | default(0) }}, "%");
+  });
+
+  function toggleTheme() {
+    document.body.classList.toggle("light-mode");
+    const isLight = document.body.classList.contains("light-mode");
+    localStorage.setItem("theme", isLight ? "light" : "dark");
+  }
+
+  // ✅ Score animation function
+  function animateScore(id, score, suffix) {
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    let current = 0;
+    const step = score > 100 ? 5 : 1;
+
+    const interval = setInterval(() => {
+      if (current >= score) {
+        el.innerText = score + suffix;
+        clearInterval(interval);
+        return;
+      }
+      current += step;
+      el.innerText = current + suffix;
+    }, 15);
+  }
+
+  function toggleFaq(el) {
+    const item = el.parentElement;
+    item.classList.toggle("open");
+  }
+
+
+  const scores = {
+        content: {{ analysis_score }},
+        order: {{ resume_order_score * 10 | int }},
+        grammar: {{ grammar_score }},
+    };
+
+        // Calculate total score average
+        const totalScore = Math.round((scores.content + scores.order + scores.grammar) / 3);
+
+        // Animate number counter
+        function animateCounter(elementId, targetValue, suffix = '') {
+            const element = document.getElementById(elementId);
+            let current = 0;
+            const increment = targetValue / 60; // 60 frames for smooth animation
+
+            element.classList.add('loading');
+
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= targetValue) {
+                    current = targetValue;
+                    clearInterval(timer);
+                    element.classList.remove('loading');
+                    element.classList.add('count-animation');
+                }
+                element.textContent = Math.round(current) + suffix;
+            }, 33); // ~30fps
+        }
+
+        // Animate circular progress
+        function animateCircularProgress(score) {
+            const circle = document.getElementById('totalProgressRing');
+            const circumference = 2 * Math.PI * 75; // radius = 75
+            const offset = circumference - (score / 100) * circumference;
+
+            setTimeout(() => {
+                circle.style.strokeDashoffset = offset;
+            }, 500);
+        }
+
+        // Animate mini progress bars
+        function animateMiniProgress(elementId, score) {
+            const element = document.getElementById(elementId);
+            const parentItem = element.closest('.score-item');
+
+            setTimeout(() => {
+                element.style.width = score + '%';
+                parentItem.style.setProperty('--progress-width', score + '%');
+                parentItem.querySelector('::before') && (parentItem.style.setProperty('width', score + '%'));
+            }, 800);
+        }
+
+        // Initialize animations when page loads
+        window.addEventListener('load', () => {
+            // Add loading state
+            document.querySelectorAll('.score-badge').forEach(badge => {
+                badge.classList.add('loading');
+            });
+
+            setTimeout(() => {
+                // Animate total score
+                animateCounter('totalScore', totalScore);
+                animateCircularProgress(totalScore);
+
+                // Animate individual scores with staggered timing
+                setTimeout(() => animateCounter('contentScore', scores.content, '%'), 200);
+                setTimeout(() => animateCounter('orderScore', scores.order, '%'), 400);
+                setTimeout(() => animateCounter('grammarScore', scores.grammar, '%'), 600);
+
+                // Animate progress bars
+                setTimeout(() => animateMiniProgress('contentProgress', scores.content), 800);
+                setTimeout(() => animateMiniProgress('orderProgress', scores.order), 1000);
+                setTimeout(() => animateMiniProgress('grammarProgress', scores.grammar), 1200);
+
+                // Animate score item backgrounds
+                document.querySelectorAll('.score-item').forEach((item, index) => {
+                    setTimeout(() => {
+                        item.style.setProperty('--bg-width', '100%');
+                        const beforeElement = item.querySelector('::before');
+                        if (beforeElement) {
+                            beforeElement.style.width = '100%';
+                        }
+                    }, 1000 + (index * 200));
+                });
+
+            }, 300);
+        });
+
+        // Add hover effects for score items
+        document.querySelectorAll('.score-item').forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                const badge = item.querySelector('.score-badge');
+                badge.style.transform = 'scale(1.1)';
+                badge.style.textShadow = '0 0 15px rgba(100, 255, 218, 0.5)';
+            });
+
+            item.addEventListener('mouseleave', () => {
+                const badge = item.querySelector('.score-badge');
+                badge.style.transform = 'scale(1)';
+                badge.style.textShadow = '0 0 10px rgba(100, 255, 218, 0.2)';
+            });
+        });
+  const totalRing = document.getElementById("totalProgressRing");
+const radius = 75;
+const circumference = 2 * Math.PI * radius;
+
+totalRing.style.strokeDasharray = `${circumference} ${circumference}`;
+totalRing.style.strokeDashoffset = circumference;
+
+function setTotalProgress(percent) {
+  const offset = circumference - (percent / 100) * circumference;
+  totalRing.style.strokeDashoffset = offset;
+}
+
+ function triggerFileUpload() {
+            const button = document.getElementById('uploadBtn');
+            const fileInput = document.getElementById('resumeInput');
+
+            // Add ripple effect
+            button.classList.add('ripple');
+            setTimeout(() => {
+                button.classList.remove('ripple');
+            }, 600);
+
+            // Trigger file input
+            fileInput.click();
+        }
+
+        function handleFileUpload(input) {
+            const button = document.getElementById('uploadBtn');
+            const file = input.files[0];
+
+            if (file) {
+                // Show loading state
+                button.classList.add('loading');
+                button.innerHTML = '<i class="fas fa-spinner"></i><span>Processing...</span>';
+
+                // Simulate processing time
+                setTimeout(() => {
+                    // Show success state
+                    button.classList.remove('loading');
+                    button.classList.add('success');
+                    button.innerHTML = '<i class="fas fa-check"></i><span>Upload Complete</span>';
+
+                    // Submit the form
+                    input.form.submit();
+                }, 1500);
+            }
+        }
+
+        // Reset button state if needed
+        function resetUploadButton() {
+            const button = document.getElementById('uploadBtn');
+            button.classList.remove('loading', 'success');
+            button.innerHTML = '<i class="fas fa-cloud-upload-alt"></i><span>Upload Resume</span>';
+        }
+
+        // Add keyboard accessibility
+        document.getElementById('uploadBtn').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                triggerFileUpload();
+            }
+        });
+// Dynamic feature highlighting
+        const featureBoxes = document.querySelectorAll('.feature-box');
+        let currentHighlight = 0;
+
+        function highlightFeature(index) {
+            // Remove highlight from all boxes
+            featureBoxes.forEach(box => box.classList.remove('highlighted'));
+
+            // Add highlight to current box
+            if (featureBoxes[index]) {
+                featureBoxes[index].classList.add('highlighted');
+            }
+        }
+
+        function startAutoHighlight() {
+            highlightFeature(currentHighlight);
+
+            setInterval(() => {
+                currentHighlight = (currentHighlight + 1) % featureBoxes.length;
+                highlightFeature(currentHighlight);
+            }, 3000);
+        }
+
+        // Add click interactions
+        featureBoxes.forEach((box, index) => {
+            box.addEventListener('click', (e) => {
+                // Don't prevent default for links, just update highlight
+                currentHighlight = index;
+                highlightFeature(currentHighlight);
+            });
+
+            // Add keyboard accessibility
+            box.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    currentHighlight = index;
+                    highlightFeature(currentHighlight);
+                }
+            });
+
+            // Make non-link boxes focusable
+            if (box.tagName !== 'A') {
+                box.setAttribute('tabindex', '0');
+            }
+        });
+
+        // Start the auto-highlight cycle
+        startAutoHighlight();
+
+
+</script>
+
+
+
+</body>
+</html>
