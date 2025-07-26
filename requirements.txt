@@ -1,0 +1,9 @@
+Flask
+firebase-admin
+python-dotenv
+python-docx
+openai
+rapidfuzz
+pymupdf
+google-generativeai
+openai
