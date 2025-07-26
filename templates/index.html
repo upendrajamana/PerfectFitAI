@@ -959,15 +959,17 @@ html, body {
 }
 
 .card {
- margin-left:150px;
-  height:450px;
-  width:400px;
+  width: 100%;
+  max-width: 400px;
+  height: auto; /* Let content define height */
   background-color: var(--card-bg, #111);
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s;
+  margin: 0 auto; /* Center the card horizontally */
 }
+
 
 .card:hover {
   transform: translateY(-5px);
@@ -975,11 +977,12 @@ html, body {
 
 .card img {
   width: 100%;
-  height: auto; /* Makes height adjust proportionally */
+  height: auto;
+  object-fit: cover;
   display: block;
-  object-fit: cover; /* Optional: keeps the image aspect ratio and fills the box */
-  max-height: 306px; /* Optional: limits height but still responsive */
+  aspect-ratio: 16 / 9; /* Optional */
 }
+
 
 .card-content {
   padding: 20px;
