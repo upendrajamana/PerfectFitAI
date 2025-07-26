@@ -276,24 +276,25 @@ html, body {
   }
 
 
-        .score-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 50px 40px;
-            border-radius: 28px;
-            max-width: 420px;
-            margin-top: 1px;
-            margin-left: 40px;
-            box-shadow:
-                0 25px 50px rgba(0, 0, 0, 0.5),
-                0 0 0 1px var(--glass-border),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-        }
+           .score-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      padding: 30px 20px;
+      border-radius: 28px;
+      max-width: 100%; /* Responsive width */
+      width: 100%;      /* Full width of parent */
+      margin: 10px auto; /* Centered on all screens */
+      box-shadow:
+        0 25px 50px rgba(0, 0, 0, 0.5),
+        0 0 0 1px var(--glass-border),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
 
         .score-card::before {
             content: '';
