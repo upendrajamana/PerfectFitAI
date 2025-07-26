@@ -1118,11 +1118,19 @@ html, body {
   margin-top: 6px;
   margin-left: 5px; /* align under the text slightly */
 }
+.page-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+  width: 100%;
+  overflow-x: hidden;
+}
 
 
 </style>
 </head>
 <body>
+  <div class="page-wrapper">
   <header>
     <h1 class="logo">PerfectFitAI<span class="logo-underline"></span> </h1>
     <nav>
@@ -1356,7 +1364,7 @@ html, body {
     <div class="faq-answer">You get your resume score almost instantly after uploading and processing.</div>
   </div>
 </section>
-
+  </div>
 <script>
            function toggleTheme() {
   const btn = document.querySelector(".toggle-theme");
