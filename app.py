@@ -13,6 +13,8 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 import random
 from dotenv import load_dotenv
+from werkzeug.security import check_password_hash
+
 cred = credentials.Certificate("fire.json")  # Your JSON filename
 firebase_admin.initialize_app(cred)
 db = firestore.client()
@@ -100,7 +102,8 @@ def home():
         analysis_score=analysis_score,             # CONTENT SCORE
         resume_order_score=resume_order_score,     # SECTION ORDER
         grammar_score=grammar_score,               # GRAMMAR
-        presence_score=presence_score              # SECTION PRESENCE
+        presence_score=presence_score  # SECTION PRESENCE
+
     )
 
 
@@ -127,6 +130,22 @@ def contact():
         return redirect(url_for('contact'))
 
     return render_template("contact.html")
+
+
+@app.route('/dashboard')
+def dashboard():
+    user_email = session.get('user')
+    if not user_email:
+        return redirect(url_for('signin'))
+
+    user_doc = db.collection('users').document(user_email).get()
+    if user_doc.exists:
+        user_data = user_doc.to_dict()
+        return render_template('index.html', user=user_data)
+    else:
+        flash('User session not valid')
+        return redirect(url_for('signin'))
+
 
 
 @app.route('/about')
@@ -246,6 +265,9 @@ def ats_checker():
     )
 
 
+@app.route('/signin/3', methods=['GET', 'POST'])
+def signin3():
+    return render_template('signin.html')  # or another file if different
 
 
 @app.route('/signin/2', methods=['GET', 'POST'])
@@ -259,7 +281,7 @@ def signin():
 
         if user_doc.exists:
             stored_data = user_doc.to_dict()
-            if stored_data['password'] == password:
+            if check_password_hash(stored_data['password'], password):
                 session['user'] = email
                 return redirect(url_for('home'))  # redirect to home page
             else:
@@ -268,6 +290,12 @@ def signin():
             flash('User not found. Please sign up.')
 
     return render_template("signin.html")
+
+from flask import Flask, render_template, request, redirect
+from firebase_admin import firestore
+from werkzeug.security import generate_password_hash
+
+db = firestore.client()  # assumes firebase_admin.initialize_app() is already done
 
 
 @app.route('/signup/3', methods=['GET', 'POST'])
@@ -283,11 +311,14 @@ def signup():
         if user_doc.exists:
             return render_template("signup.html", message="⚠️ Account already exists. Please sign in.")
 
-        # Save new user
+        # ✅ Hash the password before storing
+        hashed_password = generate_password_hash(password)
+
+        # ✅ Store user in Firestore
         user_ref.set({
             "name": name,
             "email": email,
-            "password": password  # ⚠️ Reminder: use hashing in production
+            "password": hashed_password  # Secure storage
         })
 
         return redirect("/signin/2")
