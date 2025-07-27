@@ -9,47 +9,85 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-color: #0a0a12;
-      --text-color: #f8f9fc;
-      --card-bg: #16161e;
-      --accent-color: #805cf2;
-      --accent-light: #9b7ff8;
-      --accent-dark: #4f3cc9;
-      --secondary-color: #e2c496;
-      --text-secondary: #a0a8c0;
-      --border-radius: 12px;
-      --box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-      --hover-color: linear-gradient(135deg, #4f3cc9, #7b5aff);
-      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #111118;
+      --bg-tertiary: #1a1a27;
+      --glass-bg: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      
+      --text-primary: #ffffff;
+      --text-secondary: #a0a8b7;
+      --text-tertiary: #6b7280;
+      
+      --neon-primary: #00d2ff;
+      --neon-secondary: #ff0080;
+      --neon-accent: #7c3aed;
+      --neon-success: #00ff88;
+      --neon-warning: #ffaa00;
+      
+      --gradient-primary: linear-gradient(135deg, #00d2ff 0%, #7c3aed 50%, #ff0080 100%);
+      --gradient-secondary: linear-gradient(135deg, #1e1b4b 0%, #7c2d12 50%, #be185d 100%);
+      --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+      
+      --border-radius: 16px;
+      --border-radius-large: 24px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      
+      --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     }
 
     .light-mode {
-      --bg-color: #f8f9fc;
-      --text-color: #1a1a2e;
-      --card-bg: #ffffff;
-      --accent-color: #4f3cc9;
-      --accent-light: #6b4de0;
-      --accent-dark: #3b2a9c;
-      --secondary-color: #d5a76c;
-      --text-secondary: #5a6482;
-      --box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
-      --hover-color: linear-gradient(135deg, #e8e4ff, #d0cfff);
+      --bg-primary: #f8f9fc;
+      --text-primary: #1a1a2e;
+      --glass-bg: rgba(255, 255, 255, 0.7);
+      --glass-border: rgba(0, 0, 0, 0.1);
+      --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     }
 
     body {
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--font-primary);
       margin: 0;
       padding: 0;
       transition: var(--transition);
       line-height: 1.6;
-      background-image:
-        radial-gradient(circle at 10% 20%, rgba(90, 92, 242, 0.05) 0%, rgba(0, 0, 0, 0) 80%),
-        radial-gradient(circle at 90% 80%, rgba(226, 196, 150, 0.05) 0%, rgba(0, 0, 0, 0) 80%);
-      background-attachment: fixed;
+      position: relative;
       overflow-x: hidden;
+    }
 
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(ellipse at top left, rgba(0, 210, 255, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at top right, rgba(124, 58, 237, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at bottom left, rgba(255, 0, 128, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at bottom right, rgba(0, 255, 136, 0.1) 0%, transparent 50%);
+      background-size: 80% 80%;
+      animation: backgroundFloat 20s ease-in-out infinite;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    @keyframes backgroundFloat {
+      0%, 100% { 
+        background-position: 0% 0%, 100% 0%, 0% 100%, 100% 100%; 
+      }
+      25% { 
+        background-position: 10% 10%, 90% 10%, 10% 90%, 90% 90%; 
+      }
+      50% { 
+        background-position: 20% 5%, 80% 20%, 5% 80%, 95% 85%; 
+      }
+      75% { 
+        background-position: 5% 15%, 95% 5%, 15% 95%, 85% 80%; 
+      }
     }
 
     .light-mode body {
