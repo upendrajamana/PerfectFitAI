@@ -276,33 +276,37 @@ html, body {
   }
 
 
-       .score-card {
-        background: var(--card-bg);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        padding: 30px 20px;
-        border-radius: 28px;
-        width: 100%;
-        max-width: 420px;
-        margin: 20px auto;  /* Center horizontally on all screen sizes */
-        box-shadow:
-          0 25px 50px rgba(0, 0, 0, 0.5),
-          0 0 0 1px var(--glass-border),
-          inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
-        overflow: hidden;
-        z-index: 1;
-      }
-
-    /* On larger screens, push it slightly to the right */
-            @media (min-width: 1024px) {
-              .score-card {
-                margin-left: auto;
-                margin-right: 40px;
-              }
+                    .score-card {
+              background: var(--card-bg);
+              backdrop-filter: blur(20px);
+              -webkit-backdrop-filter: blur(20px);
+              padding: 30px 20px;
+              border-radius: 28px;
+              width: 100%;
+              max-width: 420px;
+              margin: 20px auto;  /* Center horizontally on all screen sizes */
+              box-shadow:
+                0 25px 50px rgba(0, 0, 0, 0.5),
+                0 0 0 1px var(--glass-border),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+              transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+              position: relative;
+              overflow: hidden;
+              z-index: 1;
             }
-        
+
+        /* On larger screens, push it slightly to the right */
+        @media (min-width: 1024px) {
+          .score-card {
+            margin-left: auto;
+            margin-right: 40px;
+          }
+        }
+
+
+
+
+
         .score-card::before {
             content: '';
             position: absolute;
@@ -967,28 +971,25 @@ html, body {
 }
 
 .card {
-  width: 100%;
-  max-width: 400px;
-  height: auto; /* Let content define height */
+ margin-left:150px;
+  height:450px;
+  width:400px;
   background-color: var(--card-bg, #111);
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s;
-  margin: 0 auto; /* Center the card horizontally */
 }
-
 
 .card:hover {
   transform: translateY(-5px);
 }
-
 .card img {
   width: 100%;
-  height: auto;
-  object-fit: cover;
+  height: auto; /* Makes height adjust proportionally */
   display: block;
-  aspect-ratio: 16 / 9; /* Optional */
+  object-fit: cover; /* Optional: keeps the image aspect ratio and fills the box */
+  max-height: 306px; /* Optional: limits height but still responsive */
 }
 
 
@@ -1125,15 +1126,172 @@ html, body {
   margin-top: 6px;
   margin-left: 5px; /* align under the text slightly */
 }
-   
 
+* Container */
+.relative {
+    position: relative;
+}
 
+/* Utility Classes */
+.hidden {
+    display: none;
+}
 
+.inline-block {
+    display: inline-block;
+}
 
+.block {
+    display: block;
+}
+
+.flex {
+    display: flex;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.absolute {
+    position: absolute;
+}
+
+.transform {
+    transform: translateX(-50%);
+}
+
+.left-1\/2 {
+    left: 50%;
+}
+
+/* Sign In Button */
+#signInBtn {
+    background-color: #2563eb;
+    color: white;
+    padding: 8px 24px;
+    border-radius: 8px;
+    font-weight: 500;
+    text-decoration: none;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    transition: background-color 0.2s ease-in-out;
+}
+
+#signInBtn:hover {
+    background-color: #1d4ed8;
+}
+
+/* User Dropdown Container */
+#userDropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* User Dropdown Button */
+#userDropdownBtn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #f3f4f6;
+    color: #1f2937;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 500;
+    border: 1px solid #d1d5db;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+#userDropdownBtn:hover {
+    background-color: #e5e7eb;
+}
+
+/* User Initial Circle */
+#userDropdownBtn div {
+    width: 32px;
+    height: 32px;
+    background-color: #2563eb;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Dropdown Arrow */
+#userDropdownBtn svg {
+    width: 16px;
+    height: 16px;
+    color: #6b7280;
+}
+
+/* Dropdown Menu */
+#dropdownMenu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 8px;
+    width: 192px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e5e7eb;
+    padding: 8px 0;
+    z-index: 50;
+}
+
+/* Dropdown Menu Items */
+#dropdownMenu a {
+    display: block;
+    padding: 8px 16px;
+    color: #1f2937;
+    text-decoration: none;
+    transition: background-color 0.15s ease-in-out;
+}
+
+#dropdownMenu a:hover {
+    background-color: #f3f4f6;
+}
+
+/* Logout Button Special Styling */
+#logoutBtn {
+    color: #dc2626 !important;
+}
+
+#logoutBtn:hover {
+    background-color: #fef2f2 !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #dropdownMenu {
+        width: 160px;
+    }
+
+    #signInBtn {
+        padding: 6px 20px;
+        font-size: 14px;
+    }
+
+    #userDropdownBtn {
+        padding: 6px 12px;
+    }
+}
 </style>
+
 </head>
 <body>
-
   <header>
     <h1 class="logo">PerfectFitAI<span class="logo-underline"></span> </h1>
     <nav>
@@ -1159,10 +1317,41 @@ html, body {
 </div>
 
   </header>
-<div class="auth-buttons">
-  <a href="/signin/2" class="btn signin-btn"> Sign In</a>
-  <a href="/signup/3" class="btn signup-btn"> Sign Up</a>
+  <div class="relative">
+    <!-- Sign In Button (shown when not logged in) -->
+    <a href="/signin/2" id="signInBtn" class="hidden bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200 shadow-sm inline-block text-center">
+        Sign In
+    </a>
+
+    <!-- User Dropdown (shown when logged in) -->
+    <div id="userDropdown" class="hidden relative inline-block">
+        <button id="userDropdownBtn" class="flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-lg font-medium transition-colors duration-200 border border-gray-300">
+            <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+                <span id="userInitial">U</span>
+            </div>
+            <span id="userName">User</span>
+            <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+        </button>
+
+        <!-- Dropdown Menu -->
+        <div id="dropdownMenu" class="hidden absolute mt-2 left-1/2 transform -translate-x-1/2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+            <a href="{{ url_for('signin3') }}#home-page" id="dashboardBtn" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors duration-150">
+            Dashboard
+        </a>
+
+
+            <a href="#" id="profileBtn" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors duration-150">
+                Profile
+            </a>
+            <a href="#" id="logoutBtn" class="block px-4 py-2 text-red-600 hover:bg-red-50 transition-colors duration-150">
+                Logout
+            </a>
+        </div>
+    </div>
 </div>
+
 
   <section class="hero">
 
@@ -1367,6 +1556,7 @@ html, body {
     <div class="faq-answer">You get your resume score almost instantly after uploading and processing.</div>
   </div>
 </section>
+
 <script>
            function toggleTheme() {
   const btn = document.querySelector(".toggle-theme");
@@ -1639,6 +1829,175 @@ function setTotalProgress(percent) {
 
 
 </script>
+<!-- Firebase App (core SDK) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js"></script>
+
+<!-- Your Firebase Config -->
+<script>
+
+  const firebaseConfig = {
+            apiKey: "AIzaSyAaujN3ETK6FjDjnb6VlivmRXrHGb6dl4M", // Get from Firebase Console
+            authDomain: "resume-analyzer-6b6d4.firebaseapp.com",
+            projectId: "resume-analyzer-6b6d4",
+            storageBucket: "resume-analyzer-6b6d4.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID_HERE", // Get from Firebase Console
+            appId: "1:288443233510:web:2e9db80b155304c113b727" // Get from Firebase Console
+        };
+</script>
+
+
+    <script>
+    // DOM Elements
+    const signInBtn = document.getElementById('signInBtn');
+    const userDropdown = document.getElementById('userDropdown');
+    const userDropdownBtn = document.getElementById('userDropdownBtn');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    const userName = document.getElementById('userName');
+    const userInitial = document.getElementById('userInitial');
+
+    // Menu items
+    const dashboardBtn = document.getElementById('dashboardBtn');
+    const profileBtn = document.getElementById('profileBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    // Check authentication status and update UI
+    function updateAuthUI() {
+        const currentUser = localStorage.getItem('currentUser');
+
+        if (currentUser) {
+            try {
+                const user = JSON.parse(currentUser);
+                if (user.name && user.email) {
+                    // Check for updated user data from users array
+                    const users = JSON.parse(localStorage.getItem('users') || '[]');
+                    const updatedUser = users.find(u => u.email === user.email);
+
+                    // Use updated name if available
+                    const displayName = updatedUser ? updatedUser.name : user.name;
+
+                    // User is logged in - show dropdown
+                    signInBtn.classList.add('hidden');
+                    userDropdown.classList.remove('hidden');
+                    userName.textContent = displayName;
+                    userInitial.textContent = displayName.charAt(0).toUpperCase();
+
+                    // Update currentUser in localStorage if name changed
+                    if (updatedUser && updatedUser.name !== user.name) {
+                        user.name = updatedUser.name;
+                        localStorage.setItem('currentUser', JSON.stringify(user));
+                    }
+                } else {
+                    // Invalid user data - show sign in
+                    showSignInButton();
+                }
+            } catch (error) {
+                // Invalid JSON - show sign in
+                showSignInButton();
+            }
+        } else {
+            // No user data - show sign in
+            showSignInButton();
+        }
+    }
+
+    function showSignInButton() {
+        signInBtn.classList.remove('hidden');
+        userDropdown.classList.add('hidden');
+        dropdownMenu.classList.add('hidden');
+    }
+
+    // Toggle dropdown menu
+    function toggleDropdown() {
+        dropdownMenu.classList.toggle('hidden');
+    }
+
+    // Close dropdown when clicking outside
+    function closeDropdown() {
+        dropdownMenu.classList.add('hidden');
+    }
+
+    // Handle logout
+    function handleLogout() {
+        localStorage.removeItem('currentUser');
+        updateAuthUI();
+        closeDropdown();
+    }
+
+    // Event Listeners
+    userDropdownBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleDropdown();
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!userDropdown.contains(e.target)) {
+            closeDropdown();
+        }
+    });
+
+    // Menu item clicks
+    dashboardBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        closeDropdown();
+        // Add your dashboard navigation logic here
+        console.log('Navigating to Dashboard...');
+    });
+
+   document.addEventListener('DOMContentLoaded', () => {
+    const profileBtn = document.getElementById('profileBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    if (profileBtn) {
+        profileBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            closeDropdown();
+            console.log('Navigating to Profile...');
+        });
+    }
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            handleLogout();
+        });
+    }
+});
+
+function handleLogout() {
+    localStorage.removeItem('currentUser');
+    location.reload();
+}
+
+
+    // Initialize UI on page load
+    updateAuthUI();
+
+    // Listen for storage changes (if user logs in/out in another tab)
+    window.addEventListener('storage', (e) => {
+        if (e.key === 'currentUser') {
+            updateAuthUI();
+        }
+    });
+
+
+       document.getElementById('dashboardBtn').addEventListener('click', function (e) {
+    e.preventDefault();
+    const user = localStorage.getItem('currentUser');
+
+    if (user) {
+        // User is logged in: go to dashboard section inside /signin
+        window.location.href = '/signin/2?section=dashboard';
+    } else {
+        // User not logged in: go to index.html
+        window.location.href = '/index.html';
+    }
+});
+
+
+</script>
+
 
 
 
