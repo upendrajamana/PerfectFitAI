@@ -1485,6 +1485,237 @@
     transform: translateY(-5px);
   }
 }
+
+    /* added extra */
+
+    /* Fix 1: Remove background-attachment: fixed on mobile */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background:
+    radial-gradient(ellipse at top, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom left, rgba(236, 72, 153, 0.06) 0%, transparent 50%),
+    var(--bg-color);
+  /* Remove background-attachment: fixed on mobile */
+  background-attachment: fixed;
+  color: var(--text-color);
+  min-height: 100vh;
+  padding: 2rem;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Fix 2: Disable problematic animations on mobile */
+@media (max-width: 768px) {
+  /* Remove fixed background attachment on mobile - major cause of shaking */
+  body {
+    background-attachment: scroll !important;
+  }
+  
+  /* Disable the subtle move animation on mobile */
+  body::before {
+    animation: none;
+  }
+  
+  /* Reduce or disable rotating animations that can cause performance issues */
+  .score-card::after {
+    animation: none;
+  }
+  
+  /* Simplify header glow animation on mobile */
+  header::before {
+    animation: none;
+  }
+  
+  /* Reduce transform intensity on mobile for better performance */
+  .feature-box:hover {
+    transform: translateY(-4px) scale(1.01); /* Reduced from -12px and 1.03 */
+  }
+  
+  .card:hover {
+    transform: translateY(-4px) scale(1.01); /* Reduced from -8px and 1.02 */
+  }
+  
+  .upload-button:hover {
+    transform: translateY(-1px) scale(1.01); /* Reduced from -3px and 1.02 */
+  }
+  
+  .hero-text button:hover {
+    transform: translateY(-1px) scale(1.01); /* Reduced from -2px and 1.02 */
+  }
+  
+  /* Disable complex backdrop filters on mobile for better performance */
+  .glass-effect,
+  .feature-box,
+  .score-card,
+  .services-section {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  
+  /* Simplify box shadows on mobile */
+  .score-card {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  .feature-box {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Fix 3: Prevent horizontal overflow */
+@media (max-width: 768px) {
+  * {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  
+  html {
+    overflow-x: hidden;
+  }
+  
+  body {
+    overflow-x: hidden;
+    padding: 1rem;
+  }
+  
+  /* Ensure containers don't exceed viewport */
+  .hero,
+  .features,
+  .services-section,
+  .faq-section {
+    max-width: 100%;
+    overflow: hidden;
+  }
+}
+
+/* Fix 4: Optimize animations with will-change property and hardware acceleration */
+@media (min-width: 769px) {
+  /* Only apply these optimizations on desktop where they work better */
+  .score-card,
+  .feature-box,
+  .upload-button {
+    will-change: transform;
+    transform: translateZ(0); /* Force hardware acceleration */
+  }
+}
+
+/* Fix 5: Reduce animation complexity on mobile */
+@media (max-width: 768px) {
+  /* Disable complex gradient animations */
+  @keyframes borderGlow {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 0.8; }
+  }
+  
+  /* Simplify progress ring animation */
+  .progress-ring-fill {
+    transition: stroke-dashoffset 1s ease-in-out; /* Reduced from 3s */
+  }
+  
+  /* Reduce shimmer animation complexity */
+  @keyframes shimmer {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(50%); }
+  }
+}
+
+/* Fix 6: Prevent iOS Safari bounce effect issues */
+@media (max-width: 768px) {
+  html {
+    position: fixed;
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  body {
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+  }
+}
+
+/* Fix 7: Alternative approach - if the above iOS fix is too restrictive */
+/* Use this instead of Fix 6 if you need normal scrolling behavior */
+/*
+@media (max-width: 768px) {
+  body {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+}
+*/
+
+/* Fix 8: Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  body::before {
+    animation: none;
+  }
+  
+  .score-card::after {
+    animation: none;
+  }
+}
+
+/* Fix 9: Specific mobile viewport handling */
+@media (max-width: 768px) {
+  /* Use viewport units carefully on mobile */
+  body {
+    min-height: 100vh;
+    min-height: -webkit-fill-available; /* iOS Safari fix */
+  }
+  
+  /* Prevent zoom on input focus (iOS) */
+  input, select, textarea {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+}
+
+/* Fix 10: Optimize specific problematic elements */
+@media (max-width: 768px) {
+  /* Simplify the hero section layout */
+  .hero {
+    margin: 20px 10px;
+    gap: 1rem;
+  }
+  
+  /* Reduce feature box complexity */
+  .feature-box {
+    padding: 1.5rem;
+    min-height: 140px;
+  }
+  
+  /* Simplify score card */
+  .score-card {
+    padding: 24px 16px;
+    margin: 16px auto;
+  }
+  
+  /* Optimize grid layouts for mobile */
+  .features {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin: 40px 10px;
+  }
+  
+  .card-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
 </style>
 
 </head>
